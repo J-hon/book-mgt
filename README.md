@@ -16,7 +16,7 @@ $ npm install
 1. Install and create a database, `book_mgt`
    ([MacOSX](https://www.codementor.io/@engineerapart/getting-started-with-postgresql-on-mac-osx-are8jcopb)
    or [Windows](https://www.guru99.com/postgresql-create-database.html))
-2. Update database credentials in `.env.sample` accordingly.
+2. Update database credentials in `.env` accordingly.
 
 ## Running the app
 
