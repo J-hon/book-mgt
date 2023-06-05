@@ -1,6 +1,7 @@
 import * as dotenv from 'dotenv';
 import * as path from 'path';
 import { DataSource, DataSourceOptions, LoggerOptions } from 'typeorm';
+import * as Entities from '../entity';
 
 const dotenv_path = path.resolve(process.cwd(), `.env`);
 dotenv.config({ path: dotenv_path });
@@ -16,7 +17,7 @@ export const dataSourceOptions: DataSourceOptions = {
   ssl: {
     rejectUnauthorized: false,
   },
-  entities: [],
+  entities: Object.values(Entities),
   synchronize: true,
   migrations: [process.env.TYPEORM_MIGRATIONS_DIR],
 };

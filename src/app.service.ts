@@ -1,32 +1,45 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Book } from './entity/book.entity';
+import { BookDto } from './dto/book.dto';
 
 @Injectable()
 export class AppService {
   constructor(
     @InjectRepository(Book)
-    private readonly userRepo: Repository<Book>,
+    private readonly bookRepository: Repository<Book>,
   ) {}
 
-  get(): Promise<any> {
-    return 'Hello World!';
+  async get(): Promise<Book[]> {
+    return await this.bookRepository.find({});
   }
 
-  find(id: string): Promise<any> {
-    return 'Hello World!';
+  async findById(id: string): Promise<Book> {
+    const book = await this.bookRepository.findOneBy({ id });
+    if (!book) throw new NotFoundException('Book not found');
+
+    return book;
   }
 
-  create(payload: any): Promise<any> {
-    return 'Hello World!';
+  async create(payload: BookDto): Promise<Book> {
+    const book = this.bookRepository.create(payload);
+    return await this.bookRepository.save(book);
   }
 
-  update(id: string, payload: any): Promise<any> {
-    return 'Hello World!';
+  async update(id: string, payload: any): Promise<any> {
+    const { affected } = await this.bookRepository.update(id, payload);
+    if (affected != 1) {
+      throw new NotFoundException('Book not found');
+    }
+
+    return await this.findById(id);
   }
 
-  delete(id: string): Promise<any> {
-    return 'Hello World!';
+  async delete(id: string): Promise<void> {
+    const { affected } = await this.bookRepository.delete(id);
+    if (affected != 1) {
+      throw new NotFoundException('Book not found');
+    }
   }
 }
