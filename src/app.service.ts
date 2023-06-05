@@ -7,7 +7,7 @@ import { Book } from './entity/book.entity';
 export class AppService {
   constructor(
     @InjectRepository(Book)
-    private readonly userRepo: Repository<Book>,
+    private readonly bookRepository: Repository<Book>,
   ) {}
 
   get(): Promise<any> {
