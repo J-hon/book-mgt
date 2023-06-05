@@ -1,7 +1,7 @@
 import * as dotenv from 'dotenv';
 import * as path from 'path';
 import { DataSource, DataSourceOptions, LoggerOptions } from 'typeorm';
-import * as Entities from './entity';
+import * as Entities from '../entity';
 
 const dotenv_path = path.resolve(process.cwd(), `.env`);
 dotenv.config({ path: dotenv_path });

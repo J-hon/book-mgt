@@ -12,6 +12,6 @@ export class Book extends Base {
   @Column()
   author_name: string;
 
-  @Column()
+  @Column({ type: 'date' })
   published_at: Date;
 }

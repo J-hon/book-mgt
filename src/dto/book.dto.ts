@@ -1,8 +1,11 @@
 import { IsNotEmpty, IsString } from 'class-validator';
+import { IsUnique } from './../descorators/unique.decorator';
+import { Book } from './../entity';
 
 export class BookDto {
   @IsNotEmpty()
   @IsString()
+  @IsUnique(Book, 'title')
   title: string;
 
   @IsNotEmpty()

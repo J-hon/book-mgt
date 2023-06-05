@@ -1,6 +1,16 @@
-import { Controller, Delete, Get, Patch, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+} from '@nestjs/common';
 import { AppService } from './app.service';
 import { GenericStatus } from './dto/http-status.dto';
+import { BookDto } from './dto/book.dto';
+import { ObjectIdDto } from './dto/uuid.dto';
 
 @Controller('v1/books')
 export class AppController {
@@ -15,34 +25,37 @@ export class AppController {
   }
 
   @Get('/:id')
-  async show(): Promise<any> {
+  async show(@Param() { id }: ObjectIdDto): Promise<any> {
     return new GenericStatus({
       description: 'Book retrieved successfully',
-      data: await this.appService.find(),
+      data: await this.appService.findById(id),
     });
   }
 
   @Post('/')
-  async store(): Promise<any> {
+  async store(@Body() req: BookDto): Promise<any> {
     return new GenericStatus({
       description: 'Book created successfully',
-      data: await this.appService.create(),
+      data: await this.appService.create(req),
     });
   }
 
   @Patch('/:id')
-  async update(): Promise<any> {
+  async update(
+    @Param() { id }: ObjectIdDto,
+    @Body() req: BookDto,
+  ): Promise<any> {
     return new GenericStatus({
-      description: 'Book created successfully',
-      data: await this.appService.update(),
+      description: 'Book updated successfully',
+      data: await this.appService.update(id, req),
     });
   }
 
   @Delete('/:id')
-  async destroy(): Promise<any> {
+  async destroy(@Param() { id }: ObjectIdDto): Promise<any> {
     return new GenericStatus({
-      description: 'Book created successfully',
-      data: await this.appService.delete(),
+      description: 'Book deleted successfully',
+      data: await this.appService.delete(id),
     });
   }
 }
