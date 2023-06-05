@@ -27,19 +27,15 @@ export class AppService {
     return await this.bookRepository.save(book);
   }
 
-  async update(id: string, payload: any): Promise<any> {
-    const { affected } = await this.bookRepository.update(id, payload);
-    if (affected != 1) {
-      throw new NotFoundException('Book not found');
-    }
+  async update(id: string, payload: any): Promise<Book> {
+    const book = await this.findById(id);
+    await this.bookRepository.update(book.id, payload);
 
     return await this.findById(id);
   }
 
   async delete(id: string): Promise<void> {
-    const { affected } = await this.bookRepository.delete(id);
-    if (affected != 1) {
-      throw new NotFoundException('Book not found');
-    }
+    const book = await this.findById(id);
+    await this.bookRepository.delete(book.id);
   }
 }

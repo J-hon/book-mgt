@@ -11,13 +11,14 @@ import { AppService } from './app.service';
 import { GenericStatus } from './dto/http-status.dto';
 import { BookDto } from './dto/book.dto';
 import { ObjectIdDto } from './dto/uuid.dto';
+import { Book } from './entity';
 
 @Controller('v1/books')
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
   @Get('/')
-  async index(): Promise<any> {
+  async index(): Promise<GenericStatus<Book[]>> {
     return new GenericStatus({
       description: 'Books retrieved successfully',
       data: await this.appService.get(),
@@ -25,7 +26,7 @@ export class AppController {
   }
 
   @Get('/:id')
-  async show(@Param() { id }: ObjectIdDto): Promise<any> {
+  async show(@Param() { id }: ObjectIdDto): Promise<GenericStatus<Book>> {
     return new GenericStatus({
       description: 'Book retrieved successfully',
       data: await this.appService.findById(id),
@@ -33,8 +34,8 @@ export class AppController {
   }
 
   @Post('/')
-  async store(@Body() req: BookDto): Promise<any> {
-    return new GenericStatus({
+  async store(@Body() req: BookDto): Promise<GenericStatus<Book>> {
+    return new GenericStatus<Book>({
       description: 'Book created successfully',
       data: await this.appService.create(req),
     });
@@ -44,7 +45,7 @@ export class AppController {
   async update(
     @Param() { id }: ObjectIdDto,
     @Body() req: BookDto,
-  ): Promise<any> {
+  ): Promise<GenericStatus<Book>> {
     return new GenericStatus({
       description: 'Book updated successfully',
       data: await this.appService.update(id, req),
@@ -52,7 +53,7 @@ export class AppController {
   }
 
   @Delete('/:id')
-  async destroy(@Param() { id }: ObjectIdDto): Promise<any> {
+  async destroy(@Param() { id }: ObjectIdDto): Promise<GenericStatus<void>> {
     return new GenericStatus({
       description: 'Book deleted successfully',
       data: await this.appService.delete(id),
